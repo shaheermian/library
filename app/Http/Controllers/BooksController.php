@@ -17,7 +17,8 @@ class BooksController extends Controller
 
         // $data = $this->validateRequest();
 
-        Book::create($this->validateRequest());
+        $book = Book::create($this->validateRequest());
+        return redirect($book->path());
     }
 
     public function update(Book $book)
@@ -27,6 +28,7 @@ class BooksController extends Controller
         // $book = Book::find($id);
         // $book->update($data);
         $book->update($this->validateRequest());
+        return redirect($book->path());
     }
 
     public function validateRequest()
@@ -35,5 +37,11 @@ class BooksController extends Controller
             'title' => 'required|string',
             'author' => 'required|string'
         ]);
+    }
+
+    public function destroy(Book $book)
+    {
+        $book->delete();
+        return redirect(route('books.listing'));
     }
 }
